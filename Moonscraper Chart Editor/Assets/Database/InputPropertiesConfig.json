@@ -1088,6 +1088,28 @@
                 "category": 0,
                 "allowSameFrameMultiInput": false
             }
+        },
+        {
+            "mSChartEditorInputAction": "MirrorNotes",
+            "properties": {
+                "displayName": "Mirror Notes",
+                "rebindable": true,
+                "hiddenInLists": false,
+                "anyDirectionAxis": false,
+                "category": 0,
+                "allowSameFrameMultiInput": false
+            }
+        },
+        {
+            "mSChartEditorInputAction": "RandomNotes",
+            "properties": {
+                "displayName": "Random Notes",
+                "rebindable": true,
+                "hiddenInLists": false,
+                "anyDirectionAxis": false,
+                "category": 0,
+                "allowSameFrameMultiInput": false
+            }
         }
     ]
 }

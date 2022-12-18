@@ -1388,7 +1388,7 @@ public class ChartEditor : UnitySingleton<ChartEditor>
             bottomLeft = new Vector2((float)left, currentSong.TickToWorldYPosition(songObjectsCopy[0].tick));
             upperRight = new Vector2((float)right, currentSong.TickToWorldYPosition(songObjectsCopy[songObjectsCopy.Length - 1].tick));
             area = new Clipboard.SelectionArea(bottomLeft, upperRight, songObjectsCopy[0].tick, songObjectsCopy[songObjectsCopy.Length - 1].tick);
-        }        
+        }
 
         ClipboardObjectController.SetData(songObjectsCopy, area, currentSong);
     }
@@ -1416,6 +1416,105 @@ public class ChartEditor : UnitySingleton<ChartEditor>
     {
         Copy();
         Delete();
+    }
+
+    public void Mirror()
+    {
+        List<SongObject> selected = new List<SongObject>();
+        List<SongEditCommand> deleteCommands = new List<SongEditCommand>();
+        List<SongEditCommand> addCommands = new List<SongEditCommand>();
+
+        foreach (ChartObject chartObject in selectedObjectsManager.currentSelectedObjects)
+        {
+            if (chartObject.GetType() == typeof(Note))
+            {
+                Note note = chartObject as Note;
+                Note newNote = new Note(note);
+
+                // I'm only using this on 4-lane drums for mania, deal with it
+                switch (note.rawNote)
+                {
+                    case 0:
+                    {
+                        newNote.rawNote = 3;
+                        break;
+                    }
+                    case 1:
+                    {
+                        newNote.rawNote = 2;
+                        break;
+                    }
+                    case 2:
+                    {
+                        newNote.rawNote = 1;
+                        break;
+                    }
+                    case 3:
+                    {
+                        newNote.rawNote = 0;
+                        break;
+                    }
+                }
+
+                deleteCommands.Add(new SongEditDelete(note));
+                addCommands.Add(new SongEditAdd(newNote));
+                selected.Add(newNote);
+            }
+            else
+                selected.Add(chartObject);
+        }
+
+        // Delete commands must come first, as add commands can overwrite notes we might try to delete later
+        List<SongEditCommand> songEditCommands = new List<SongEditCommand>();
+        songEditCommands.AddRange(deleteCommands);
+        songEditCommands.AddRange(addCommands);
+
+        commandStack.Push(new BatchedSongEditCommand(songEditCommands));
+        selectedObjectsManager.TryFindAndSelectSongObjects(selected);
+    }
+    
+    public void Random()
+    {
+        List<SongObject> selected = new List<SongObject>();
+        List<SongEditCommand> deleteCommands = new List<SongEditCommand>();
+        List<SongEditCommand> addCommands = new List<SongEditCommand>();
+
+        foreach (ChartObject chartObject in selectedObjectsManager.currentSelectedObjects)
+        {
+            if (chartObject.GetType() == typeof(Note))
+            {
+                Note note = chartObject as Note;
+                Note newNote = new Note(note);
+
+                // I'm only using this on 4-lane drums for mania, deal with it
+                // Shuffle the column order, translate notes using that new order
+                var rng = new System.Random();
+                var order = new int[] {0, 1, 2, 3};
+                int n = order.Length;
+                while (n > 1)
+                {
+                    int k = rng.Next(n--);
+                    int tmp = order[n];
+                    order[n] = order[k];
+                    order[k] = tmp;
+                }
+                newNote.rawNote = order[note.rawNote];
+
+                deleteCommands.Add(new SongEditDelete(note));
+                addCommands.Add(new SongEditAdd(newNote));
+                selected.Add(newNote);
+            }
+            else
+                selected.Add(chartObject);
+        }
+
+        // Delete commands must come first, as add commands can overwrite notes we might try to delete later
+        List<SongEditCommand> songEditCommands = new List<SongEditCommand>();
+        songEditCommands.AddRange(deleteCommands);
+        songEditCommands.AddRange(addCommands);
+
+        commandStack.Push(new BatchedSongEditCommand(songEditCommands));
+        selectedObjectsManager.TryFindAndSelectSongObjects(selected);
     }
 
     // Gives undo-redo functionality to sub-states

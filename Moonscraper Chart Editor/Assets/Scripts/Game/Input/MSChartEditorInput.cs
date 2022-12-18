@@ -144,6 +144,10 @@ public enum MSChartEditorInputActions
 
     Whammy,
     StartGameplay,
+
+    // Custom actions
+    MirrorNotes,
+    RandomNotes,
 }
 
 public static class MSChartEditorInput

@@ -100,6 +100,10 @@ public class EditorState : SystemManagerState
                 editor.Cut();
             else if (MSChartEditorInput.GetInputDown(MSChartEditorInputActions.ClipboardCopy))
                 editor.Copy();
+            else if (MSChartEditorInput.GetInputDown(MSChartEditorInputActions.MirrorNotes))
+                editor.Mirror();
+            else if (MSChartEditorInput.GetInputDown(MSChartEditorInputActions.RandomNotes))
+                editor.Random();
         }
     }
 }

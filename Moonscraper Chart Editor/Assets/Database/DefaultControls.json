@@ -2264,6 +2264,54 @@
                 ],
                 "jsMaps": []
             }
+        },
+        {
+            "action": "MirrorNotes",
+            "input": {
+                "kbMaps": [
+                    {
+                        "modifiers": 2,
+                        "keys": [
+                            100
+                        ]
+                    },
+                    {
+                        "modifiers": 0,
+                        "keys": []
+                    }
+                ],
+                "gpButtonMaps": [
+                    {
+                        "buttons": [],
+                        "axes": []
+                    }
+                ],
+                "jsMaps": []
+            }
+        },
+        {
+            "action": "RandomNotes",
+            "input": {
+                "kbMaps": [
+                    {
+                        "modifiers": 6,
+                        "keys": [
+                            100
+                        ]
+                    },
+                    {
+                        "modifiers": 0,
+                        "keys": []
+                    }
+                ],
+                "gpButtonMaps": [
+                    {
+                        "buttons": [],
+                        "axes": []
+                    }
+                ],
+                "jsMaps": []
+            }
         }
     ]
 }
